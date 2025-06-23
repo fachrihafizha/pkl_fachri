@@ -2,6 +2,9 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MyController;
+use App\Http\Controllers\BackandController;
+use App\Http\Middleware\Admin;
+
 
 Route::get('/', function () {
     return view('welcome');
@@ -58,3 +61,11 @@ Route::delete('/siswa/{id}',[MyController::class, 'destroy']);
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+//import controllernya
+use App\Http\Controllers\BackendController;
+//route admin
+Route::group(['prefix' => 'admin', 'middleware' => ['auth']],function(){
+    Route::get('/',[BackendController::class,'index']);
+    });
