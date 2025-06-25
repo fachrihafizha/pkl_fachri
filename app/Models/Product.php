@@ -1,24 +1,39 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    //field apa saja yang boleh di isi
-    public $fillable = ['caregory_id','name','slug','description','image','price','stok'];
+    // field apa saja yang wajib di isi
+    public $fillable = ['category_id', 'name', 'slug', 'description',
+        'image', 'price', 'stock'];
 
     public function category()
     {
         return $this->belongsTo(Category::class);
     }
+
     public function cart()
     {
         return $this->hasMany(Cart::class);
     }
 
-    public function product(){
-        return $this->belingsToMany(Product::class)->withPivot('qty','price')->withTimestamps();
+    // relasi many to many dengan Order
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class)->withPivot('qty', 'price')
+            ->withTimestamps();
     }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function getRouteKeyName()
+    {
+        return 'slug';
+    }
+
 }
